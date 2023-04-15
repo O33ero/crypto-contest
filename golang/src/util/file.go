@@ -1,6 +1,7 @@
 package util
 
 import (
+	"io/fs"
 	"log"
 	"os"
 )
@@ -12,4 +13,11 @@ func GetFileContent(filePath string) ([]byte, error) {
 		return nil, err
 	}
 	return data, nil
+}
+
+func PutToFile(filePath string, data []byte) {
+	err := os.WriteFile(filePath, data, fs.ModePerm)
+	if err != nil {
+		return
+	}
 }
