@@ -1,17 +1,17 @@
 package main
 
 import (
+	. "golang/src/util"
 	"log"
-	"os"
 )
 
 var (
-	taskFile = ".\\task\\task2"
-	maxLen   = 250
+	task2File = ".\\task\\task2"
+	maxLen    = 250
 )
 
 func main() {
-	text, err := getFileContent(taskFile)
+	text, err := GetFileContent(task2File)
 	if err != nil {
 		return
 	}
@@ -56,13 +56,4 @@ func countBytesFrequency(text []byte, offset int, keyLen int) map[byte]int {
 		}
 	}
 	return result
-}
-
-func getFileContent(filePath string) ([]byte, error) {
-	data, err := os.ReadFile(filePath)
-	if err != nil {
-		log.Fatal("Failed to open file", err.Error())
-		return nil, err
-	}
-	return data, nil
 }
