@@ -8,10 +8,10 @@ import (
 )
 
 var (
-	basePermutation        = "123456789AB"
-	knownPermutationPrefix = "C"
-	knownSubstring         = "Отчетливая"
-	source                 = []rune(" я алтичетвОонсвантмиоин а тетк  ьстео н  яреивтнаидболрепа ивттщуе с серыавхы ьнл есйте е ниеджумщип ря иевн е нентвсоелга ерзче   рееча  л о глоьггтл о азтсвес уе ощнс   ньоелтеизиитмеаесдн г л ннываомртЭо мо.олг а")
+	basePermutation        = "2A"
+	knownPermutationPrefix = "C195B78D364"
+	knownSubstring         = ""
+	source                 = []rune("а ен жбеко Трр есзтиваял ап дх увооу  ззлооур  впк твкуегч  ойоир ео в се беалуливезо щигг счетон  тойилотд  исрй  кеаолвыо  вн.рС   агнаяи р  р дюеа пфт аар  сс нко и иер пе ьеревдвп ю ытивр геае ынеш сло  лнат  ыцва   е з еобомпзт  уасенч  чзовит.рв а   евют   ко туД с пртдвиеу хява  Вв з ак сньое  НЗ МыОахК. уе п ля жо нжелвто даы же а амслишре  чвт   поас неюомс ыез лноаа.енус  тюювп")
 	outFile                = ".//response//response1.txt"
 	file, _                = os.OpenFile(outFile, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	permuts                = map[rune]int{
@@ -30,6 +30,9 @@ var (
 		'D': 12,
 		'E': 13,
 	}
+
+	//а ен жбеко Тр
+	//123456789ABCD
 )
 
 func main() {
@@ -56,23 +59,28 @@ func generatePermutations(basePermutations []byte) {
 
 		for _, np := range nextPermutations {
 			if len(np) == permutationSize {
-				permutation := np
-				permutedText := permuteText(knownPermutationPrefix+string(permutation), source)
-
-				if strings.Contains(permutedText, knownSubstring) {
-					sprintf := fmt.Sprintf("%s: %s\n", knownPermutationPrefix+string(permutation), permutedText)
-					log.Printf(sprintf)
-					_, err := file.WriteString(sprintf)
-					if err != nil {
-						log.Fatal("Failed to write to file")
-						return
-					}
-				}
+				brute(np)
 			} else {
 				permutations = append(permutations, np)
 			}
 		}
 	}
+}
+
+func brute(np []byte) bool {
+	permutation := np
+	permutedText := permuteText(knownPermutationPrefix+string(permutation), source)
+
+	if strings.Contains(permutedText, knownSubstring) {
+		sprintf := fmt.Sprintf("%s: %s\n", knownPermutationPrefix+string(permutation), permutedText)
+		log.Printf(sprintf)
+		_, err := file.WriteString(sprintf)
+		if err != nil {
+			log.Fatal("Failed to write to file")
+			return true
+		}
+	}
+	return false
 }
 
 func permuteText(permutation string, source []rune) string {

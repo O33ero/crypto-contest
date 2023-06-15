@@ -9,12 +9,12 @@ import (
 )
 
 var (
-	outputFile1, _ = os.OpenFile(".//response//response3.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	outputFile3, _ = os.OpenFile(".//response//response3-Ilya.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 )
 
 func main() {
 	var (
-		encryptedFilePath = ".\\task\\task3_N"
+		encryptedFilePath = ".\\test\\task3_2"
 		basePermutation   = []byte("Wit8Ched29")
 	)
 
@@ -23,17 +23,17 @@ func main() {
 		return
 	}
 	log.Println(encryptFileStructure.Iter, encryptFileStructure.PlainTextLen, string(encryptFileStructure.Salt))
-	BruteAllKeys(basePermutation, encryptFileStructure)
+	BruteAllKeys2(basePermutation, encryptFileStructure)
 }
 
-func BruteAllKeys(basePermutations []byte, fileStruct EncryptFile) {
+func BruteAllKeys2(basePermutations []byte, fileStruct EncryptFile) {
 	permutationSize := len(basePermutations)
 	var permutations [][]byte
 	var alphabet = make([]byte, len(basePermutations))
 
 	// init permutations
 	for i, c := range basePermutations {
-		go tryDecrypt(fileStruct, []byte{c})
+		tryDecrypt2(fileStruct, []byte{c})
 		permutations = append(permutations, []byte{c})
 		alphabet[i] = c
 	}
@@ -45,7 +45,7 @@ func BruteAllKeys(basePermutations []byte, fileStruct EncryptFile) {
 
 		nextPermutations := GetNextPermutationsWithDuplicates(cur, CreateCopyArray(alphabet))
 		for _, np := range nextPermutations {
-			go tryDecrypt(fileStruct, np)
+			go tryDecrypt2(fileStruct, np)
 			if len(np) != permutationSize {
 				permutations = append(permutations, np)
 			}
@@ -53,16 +53,16 @@ func BruteAllKeys(basePermutations []byte, fileStruct EncryptFile) {
 	}
 }
 
-func tryDecrypt(fileStruct EncryptFile, cur []byte) {
+func tryDecrypt2(fileStruct EncryptFile, cur []byte) {
 	decrypt, err := Decrypt(fileStruct, cur)
 	if err != nil {
 		log.Fatalln("Failed to decrypt")
 	}
 	s := string(decrypt)
-	if strings.Contains(s, "dragon96") {
+	if strings.Contains(s, "Send") {
 		outputString := fmt.Sprintf("%s: %s\n", string(cur), s)
 		log.Print(outputString)
-		//_, err = outputFile1.WriteString(outputString)
+		//_, err = outputFile3.WriteString(outputString)
 		//if err != nil {
 		//	log.Fatalln("Failed to write to file")
 		//}

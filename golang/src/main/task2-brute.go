@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	keyLen = 31
+	keyLen = 24
 )
 
 func main() {
@@ -24,6 +24,7 @@ func main() {
 		decodedHex := DecodeText(text, k)
 
 		log.Printf("Possible key(string): %s\n", keyString)
+		log.Printf("Decoded text (text): %s\n", string(decodedHex))
 		log.Printf("Decoded text (hex): %s\n", hex.EncodeToString(decodedHex))
 	}
 }
